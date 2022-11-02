@@ -35,7 +35,7 @@ public class Room
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
      * @param north The north exit.
-     * @param east The east east.
+     * @param east The east exit.
      * @param south The south exit.
      * @param west The west exit.
      */
@@ -49,6 +49,46 @@ public class Room
             southExit = south;
         if(west != null)
             westExit = west;
+    }
+    public Room getExit(String direction)
+    {
+        if(direction.equals("north")) {
+            return northExit;
+        }
+        if(direction.equals("east")) {
+            return eastExit;
+        }
+        if(direction.equals("south")) {
+            return southExit;
+        }
+        if(direction.equals("west")) {
+            return westExit;
+        }
+        return null;
+    }
+
+    /**
+     * Return a description of the room’s exits,
+     * for example, "Exits: north west".
+     * @return A description of the available exits.
+     */
+    public String getExitString(){
+        System.out.print("Exits: ");
+        String exits = "";
+        if(northExit != null) {
+            exits = exits + "north ";
+        }
+        if(eastExit != null) {
+            exits = exits + "east ";
+        }
+        if(southExit != null) {
+            exits = exits + "south ";
+        }
+        if(westExit != null) {
+            exits = exits + "west ";
+        }
+        else return "There is no door!";
+        return exits;
     }
 
     /**

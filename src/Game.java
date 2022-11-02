@@ -34,23 +34,46 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room entrance, library, computerlab, caffeteria, teacheroffice, hallway, studyarea, stairwayto2ndfloor, observatory, theater, hallway2ndfloor, studyarea2ndfloor, stairwayto1stfloor, trophyhall, biologylab, examroom;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        
-        // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        entrance = new Room("inside the main entrance of the university");
+        theater = new Room("in the school theater");
+        library = new Room("in the school library");
+        computerlab = new Room("in a computing lab");
+        caffeteria = new Room("in the school caffeteria");
+        teacheroffice = new Room("in the teacher office");
+        hallway = new Room("in the 1st floor hallway");
+        studyarea = new Room("in the 1st floor study area");
+        stairwayto2ndfloor = new Room("at the stairway to 2nd floor");
+        observatory = new Room("in the school observatory");
+        hallway2ndfloor = new Room("in the 2nd floor hallway");
+        studyarea2ndfloor = new Room("in the 2nd floor study area");
+        stairwayto1stfloor = new Room("at the stairway to 1st floor");
+        trophyhall = new Room("in the school tropyhall");
+        biologylab = new Room("in the school biologylab");
+        examroom = new Room("in the exam room");
 
-        currentRoom = outside;  // start game outside
+
+        // initialise room exits
+        entrance.setExits(null, hallway, caffeteria, library);
+        caffeteria.setExits(entrance, computerlab, null, teacheroffice);
+        library.setExits(null, entrance, computerlab, null);
+        computerlab.setExits(library, caffeteria, null, null);
+        teacheroffice.setExits(null, null, null, caffeteria);
+        hallway.setExits(null, studyarea, null, entrance);
+        studyarea.setExits(null, null, stairwayto2ndfloor, hallway);
+        stairwayto2ndfloor.setExits(studyarea, null,stairwayto1stfloor,null);
+        stairwayto1stfloor.setExits(studyarea2ndfloor, null, stairwayto1stfloor, null);
+        studyarea2ndfloor.setExits(null, null, stairwayto1stfloor, hallway2ndfloor);
+        hallway2ndfloor.setExits(null, studyarea2ndfloor, null, theater);
+        theater.setExits(null, hallway2ndfloor, trophyhall, observatory);
+        observatory.setExits(null, theater, biologylab, null);
+        trophyhall.setExits(theater, examroom, null, biologylab);
+        biologylab.setExits(observatory, trophyhall, null, null);
+        examroom.setExits(null, null,null, trophyhall);
+
+        currentRoom = entrance;  // start game outside
     }
 
     /**
@@ -74,6 +97,13 @@ public class Game
     /**
      * Print out the opening message for the player.
      */
+
+    private void printLocationInfo()
+    {
+        System.out.println("You are " + currentRoom.getDescription());
+        System.out.println(currentRoom.getExitString());
+    }
+
     private void printWelcome()
     {
         System.out.println();
@@ -81,21 +111,8 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
-        System.out.println();
+        printLocationInfo();
+
     }
 
     /**
@@ -157,40 +174,14 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
+        Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
+            printLocationInfo();
         }
     }
 
