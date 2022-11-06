@@ -20,6 +20,9 @@ public class Room
     private String description;
     private HashMap<String, Room> exits;
 
+    private Item items;
+
+
     /**
      * Create a room described "description "Initially, it
      * has no exits. "description" is something like "a
@@ -29,6 +32,10 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<String, Room>();
+        items = null;
+    }
+    public void addItem(Room, Item()){
+
     }
 
     /**
@@ -83,4 +90,8 @@ public class Room
     {
         return "You are " + description + ".\n" + getExitString();
     }
+
+
+
+
 }

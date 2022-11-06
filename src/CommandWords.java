@@ -27,12 +27,13 @@ public class CommandWords
     /**
      * Print all valid commands to System.out.
      */
-    public void showAll()
+    public String getCommandList()
     {
+        String commandList = "";
         for(String command : validCommands) {
-            System.out.print(command + " ");
+            commandList += command + " ";
         }
-        System.out.println();
+        return commandList;
     }
 
     /**
